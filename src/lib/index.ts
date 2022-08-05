@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import { Request, Response, Router } from "express";
 import { TResponseTemplate, TRoute, TMiddleware, TController } from "./types";
-import { sqlErrorHandler } from '../helpers/error-handlers'; 
+import { sqlErrorHandler } from '../helpers/error-handlers';
 import { _CANT_SEND_MAIL_ } from '../helpers/error-codes';
 
 
@@ -13,7 +13,7 @@ export function createController(body: (req: Request, res: Response) => any): TC
     try {
       result.data = (await body(req, res)) || {};
     }
-    catch (e) { 
+    catch (e) {
       console.log(`error`, e);
       let err: any = e;
       if (err.isSql)
@@ -23,7 +23,7 @@ export function createController(body: (req: Request, res: Response) => any): TC
           code: err.code || err.errCode || 5000,
           message: err.message || err.errMessage || "Unknown Error"
         };
-        result.meta.status = err.status || 500;
+      result.meta.status = err.status || 500;
     }
     res.status(result.meta.status).json(result);
   };
@@ -52,22 +52,22 @@ export function setupRouter(apiRoutes: TRoute[], router: Router) {
 
 }
 
-export async function hashingString (password: string): Promise<string> {
-      try{
-          const hashSalt = await bcrypt.genSalt(10); 
-           
-          const hashedStr = await bcrypt.hash(password+"", hashSalt);  
-          
-          return hashedStr;
-      }catch(err){ 
-          throw ({
-              errCode: 1623,
-              message: "Հեշավորումը ավարտվեց անհաջողությամբ"
-          });
-      }              
-} 
+export async function hashingString(password: string): Promise<string> {
+  try {
+    const hashSalt = await bcrypt.genSalt(10);
 
-export async function sendEmail(email: string, options: { subject?: string, text?: string, html?: string } ) {
+    const hashedStr = await bcrypt.hash(password + "", hashSalt);
+
+    return hashedStr;
+  } catch (err) {
+    throw ({
+      errCode: 1623,
+      message: "Հեշավորումը ավարտվեց անհաջողությամբ"
+    });
+  }
+}
+
+export async function sendEmail(email: string, options: { subject?: string, text?: string, html?: string }) {
   try {
     const transporter = nodemailer.createTransport({
       service: "Yandex",
@@ -90,4 +90,4 @@ export async function sendEmail(email: string, options: { subject?: string, text
     throw _CANT_SEND_MAIL_;
   }
 }
- 
+
