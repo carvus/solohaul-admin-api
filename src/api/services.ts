@@ -27,6 +27,4 @@ router.put("/:id", multer.fields([
 
 router.delete("/:id", crud.remove);
 
-
-
 export default router;

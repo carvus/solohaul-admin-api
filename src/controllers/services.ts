@@ -11,3 +11,10 @@ export const addServiceController = createController(async (req: Request) => {
 
     return await common.insert("services", data);
 });
+
+export const getServiceTicketsController = createController(async (req: Request) => {
+    const { serviceId } = req.params;
+    return {
+        items: await common.select("service_tickets", ["id", "title", "price"], { serviceId }),
+    }
+});
