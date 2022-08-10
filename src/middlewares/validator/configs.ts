@@ -24,6 +24,50 @@ const requestValidations: {
             body: Joi.string()
         }
     }),
+    add_service: Joi.object({
+        files: {
+            mobileBackground: Joi.not(),
+            background: Joi.required(),
+            cardImage: Joi.required(),
+            ticketImage: Joi.not().required()
+        },
+        fields: {
+            title: Joi.string().required(),
+            description: Joi.string().required(),
+            urlId: Joi.string(),
+            price: Joi.string()
+        }
+    }),
+    update_service: Joi.object({
+        files: {
+            mobileBackground: Joi.not(),
+            background: Joi.not(),
+            cardImage: Joi.not(),
+            ticketImage: Joi.not()
+        },
+        fields: {
+            title: Joi.string(),
+            description: Joi.string(),
+            urlId: Joi.string(),
+            price: Joi.string()
+        }
+    }),
+    add_ticket: Joi.object({
+        files: {},
+        fields: {
+            title: Joi.string().required(),
+            price: Joi.number().required(),
+            serviceId: Joi.number().required()
+        }
+    }),
+    update_ticket: Joi.object({
+        files: {},
+        fields: {
+            title: Joi.string(),
+            price: Joi.number(),
+            serviceId: Joi.number()
+        }
+    }),
 }
 
 
