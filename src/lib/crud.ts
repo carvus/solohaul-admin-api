@@ -23,7 +23,10 @@ export default class Crud {
         let query = `SELECT ${this.columns ? '??' : '*'} FROM ?? `;
         const [page, rowsPerPage] = this.getPaginationParams(req.query.page, req.query.rowsPerPage);
         const params: (string | string[] | number)[] = [this.tableName, (page - 1) * rowsPerPage, rowsPerPage];
+        const countParams: (string | string[] | number)[] = [rowsPerPage];
 
+        if (this.columns) countParams.push(this.columns);
+        countParams.push(this.tableName);
 
         if (req.query.query && this.searchableColumns) {
             query += format(`WHERE CONCAT(??) LIKE ? `, [this.searchableColumns, `%${req.query.query}%`]);
@@ -31,6 +34,7 @@ export default class Crud {
 
         if (this.columns)
             params.unshift(this.columns);
+        console.log(params);
 
         const [items, pagesCount] = await Promise.all([
             DbOperations.common.exec(
@@ -38,7 +42,8 @@ export default class Crud {
                 params
             ),
             DbOperations.common.exec(`SELECT CEIL(COUNT(id)/?) AS pagesCount FROM (${query}) a`,
-                [rowsPerPage, this.tableName]),
+                countParams
+            ),
         ]);
         return { ...pagesCount[0], items };
     })

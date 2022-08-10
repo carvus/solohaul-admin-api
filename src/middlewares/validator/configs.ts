@@ -29,12 +29,12 @@ const requestValidations: {
             mobileBackground: Joi.not(),
             background: Joi.required(),
             cardImage: Joi.required(),
-            ticketImage: Joi.not()
+            ticketImage: Joi.not().required()
         },
         fields: {
             title: Joi.string().required(),
             description: Joi.string().required(),
-            urlId: Joi.string().required(),
+            urlId: Joi.string(),
             price: Joi.string()
         }
     }),
