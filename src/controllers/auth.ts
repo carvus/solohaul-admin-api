@@ -19,7 +19,7 @@ export const loginController: TController = createController(async (req, res) =>
   const jwtSecret = process.env.JWT_SECRET || "";
 
   const token = jwt.sign({
-    uid: admin.uid,
+    id: admin.id,
   }, jwtSecret, { expiresIn: 60 * 60 * 24 * 365 });
 
   return { token };

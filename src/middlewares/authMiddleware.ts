@@ -6,15 +6,16 @@ const authMiddleware: TMiddleware = (req, res, next) => {
 
   try {
     const token: string | undefined = (req.header(`Authorization`) || "").split(` `)[1];
+    console.log(token);
     if (token) {
       const sectey_key = process.env.JWT_SECRET;
       let parsedToken = jwt.verify(token, sectey_key || '');
-    
-      if (typeof parsedToken == "string" || !parsedToken.uid) throw new Error();
-      req.user = { uid: parsedToken.uid };    
+
+      if (typeof parsedToken == "string" || !parsedToken.id) throw new Error();
+      req.user = { id: parsedToken.id };
     } else throw new Error();
-  } catch (err) { 
-    throw _TOKEN_IS_WRONG_; 
+  } catch (err) {
+    throw _TOKEN_IS_WRONG_;
   }
   next();
 
