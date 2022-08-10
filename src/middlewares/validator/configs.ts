@@ -10,6 +10,20 @@ const requestValidations: {
     //         description_eng: Joi.required()
     //     }
     // })
+    add_news: Joi.object({
+        files: { image: Joi.required(), blog_image: Joi.required(), mobile_image: Joi.required() },
+        fields: {
+            title: Joi.string().required(),
+            body: Joi.string().required()
+        }
+    }),
+    update_news: Joi.object({
+        files: { image: Joi.not(), blog_image: Joi.not(), mobile_image: Joi.not() },
+        fields: {
+            title: Joi.string(),
+            body: Joi.string()
+        }
+    }),
 }
 
 
