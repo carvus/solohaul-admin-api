@@ -44,6 +44,7 @@ export const forgetPasswordCheckEmailController: TController = createController(
   await sendEmail(req.body.email, { subject: `Reset Code`, text: random.toString() });
   return { token };
 });
+
 export const forgetPasswordVerifyCodeController: TController = createController(async (req, res) => {
   const token = typeof req.headers.reset_token == "string" ? req.headers.reset_token : ``;
   const code = req.body.code;
@@ -53,7 +54,7 @@ export const forgetPasswordVerifyCodeController: TController = createController(
   let decoded = jwt.verify(token, jwtSecret);
   decoded = typeof decoded == `string` ? {} : decoded;
   const isCodeTrue = await bcrypt.compare(code, decoded.token);
-  if(!isCodeTrue) throw _RESET_CODE_IS_WRONG_;
+  if (!isCodeTrue) throw _RESET_CODE_IS_WRONG_;
 
   const currentUser = (await common.select(`admins`, `*`, { email: decoded.email }))[0];
 
@@ -64,6 +65,7 @@ export const forgetPasswordVerifyCodeController: TController = createController(
 
   return { token: newToken }
 });
+
 export const forgetPasswordResetPasswordController: TController = createController(async (req, res) => {
   const token = typeof req.headers.reset_token == "string" ? req.headers.reset_token : ``;
   const jwtSecret: string = process.env.JWT_SECRET || ``;
